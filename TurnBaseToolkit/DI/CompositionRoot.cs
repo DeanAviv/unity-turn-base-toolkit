@@ -13,7 +13,6 @@ namespace TurnBaseToolkit
         {
             _gameManager.Initialize(_playerController, _aiController);
             _endTurnButton.Initialize(_gameManager);
-            _playerController.Initialize(_gameManager);
             _aiController.Initialize(_gameManager);
         }
     }
