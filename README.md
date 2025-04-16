@@ -1,43 +1,101 @@
-# Turn-Based Toolkit
+# Unity Turn-Based Toolkit
 
-This project demonstrates a turn-based game system implemented in Unity using C# scripting. It includes various components such as GameManager, PlayerController, AIController, and EndTurnButton to manage the game flow and player interactions.
+A modular and extensible framework for building turn-based games in Unity, featuring a clean state-driven architecture, intuitive input handling, and built-in support for Dependency Injection via Zenject.
 
-## Project Structure
+---
 
-### CompositionRoot.cs
+## ✨ Features
 
-The `CompositionRoot` class serves as the entry point where dependencies are initialized and wired together. It initializes instances of GameManager, EndTurnButton, PlayerController, and AIController and ensures they are properly connected.
+- 🔁 Turn-based round controller
+- 🧠 AI and player turn state system
+- 💡 State-driven design using abstract classes/interfaces
+- 🧩 Plug-and-play architecture with Zenject support
+- 🎯 Great for tactical RPGs, board games, or mini-games
 
-### Logic Interfaces
+---
 
-- `IPlayTurn`: Defines interfaces for player and AI controllers to begin and end their turns.
-- `ITurnManager`: Defines an interface for the GameManager to initialize turns and handle the end of each turn.
+## 📦 Installation
 
-### Game States
+1. Clone or download the repository
+2. Import the scripts into your Unity project
+3. Set up the game objects and turn manager prefab
+4. (Optional) Add a Zenject `SceneContext` and bind your dependencies
 
-The `GameState` enum defines various states of the game, including InitGame, PlayerTurn, AiTurn, and Results.
+---
 
-### GameManager.cs
+## 🛠️ Usage Example
 
-The GameManager class implements the game logic, including initializing turns, handling player and AI turns, and managing game states.
+Create a custom player state:
 
-### Controllers
+```csharp
+public class PlayerTurnState : TurnState
+{
+    public override void Enter()
+    {
+        Debug.Log("Player's Turn Begins!");
+        // Handle player input here
+    }
 
-- `PlayerController`: Represents the player controller, implementing the IPlayTurn interface to handle player turn logic.
-- `AIController`: Represents the AI controller, implementing the IPlayTurn interface to handle AI turn logic.
+    public override void Exit()
+    {
+        Debug.Log("Player's Turn Ends.");
+    }
+}
+```
 
-## Usage
+Use the turn manager to transition:
 
-To use this project, follow these steps:
+```csharp
+_turnManager.SetState(new PlayerTurnState());
+```
 
-1. Attach the CompositionRoot script to a GameObject in your Unity scene.
-2. Assign references to GameManager, EndTurnButton, PlayerController, and AIController in the Inspector.
-3. Run the game and observe the turn-based gameplay mechanics.
+---
 
-## Dependencies
+## 📁 Structure Overview
 
-This project has no external dependencies beyond Unity itself.
+```
+TurnBaseToolkit/
+├── TurnManager.cs
+├── TurnState.cs
+├── PlayerTurnState.cs
+├── EnemyTurnState.cs
+├── TurnContext.cs
+└── Installer.cs (for Zenject)
+```
 
-## License
+---
 
-This project is licensed under the [MIT License](LICENSE).
+## 🧩 Zenject Integration
+
+If you're using [Zenject](https://github.com/modesttree/Zenject):
+
+```csharp
+public class GameInstaller : MonoInstaller
+{
+    public override void InstallBindings()
+    {
+        Container.Bind<TurnManager>().AsSingle();
+        Container.Bind<ITurnState>().To<PlayerTurnState>().AsTransient();
+    }
+}
+```
+
+---
+
+## 🔍 Use Cases
+
+- Tactical RPGs (e.g., Fire Emblem style)
+- Board games and chess-like logic
+- Puzzle games with enemy phases
+
+---
+
+## 📸 Screenshots / GIFs
+
+_Coming soon!_
+
+---
+
+## 📄 License
+
+MIT © [Dean Aviv](https://github.com/DeanAviv)
